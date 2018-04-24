@@ -144,11 +144,28 @@ function removeClass(ele, name){
 
     ele.className = ele.className.replace(new RegExp(name), '');
 }
-
+//toggle class 9
 function toggleClass(ele, name) {
     if(hasClass(ele, name)){
         removeClass(ele, name);
     }else{
         addClass(ele, name);
     }
+}
+
+// 短横线写法  < > 驼峰写法
+function c2l(str){
+    if(!str) return;
+    return str.substring(0,str.indexOf('-')) + str[str.indexOf('-') + 1].toUpperCase() + str.substring(str.indexOf('-') + 2);
+}
+
+function c2l2(str){
+    return str.replace(/-(\w)/g, function(all, letter, letter2){
+        console.log(all,letter, letter2);
+        return letter.toUpperCase();
+    });
+}
+
+function l2c(str){
+    return str.replace(/([A-Z])/g, '-$1').toLowerCase();
 }

@@ -3,9 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <title>tool</title>
+    <style>
+        .wrap{
+            display: flex;
+            display: -webkit-flex;
+        }
+        .left,.right{
+            width: 100px;
+            height: 100px;
+        }
+        .left{
+            order: 1;
+            margin-right: 10px;
+            background: red;
+        }
+        .right{
+            order: 3;
+            margin-left: 10px;
+            background: blue;
+        }
+        .main{
+            order: 2;
+            flex: 1;
+            height: 100px;
+            background: black;
+        }
+    </style>
 </head>
 <body>
 <h1 class="one two three four">tool</h1>
+
+<div class="wrap">
+    <div class="main"></div>
+    <div class="left"></div>
+    <div class="right"></div>
+</div>
 
 <script src="./tool.js"></script>
 </body>
