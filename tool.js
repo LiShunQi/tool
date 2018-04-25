@@ -169,3 +169,39 @@ function c2l2(str){
 function l2c(str){
     return str.replace(/([A-Z])/g, '-$1').toLowerCase();
 }
+
+Array.prototype.indexof = function(searchElement, fromIndex){
+    var k;
+
+    if(this == null){
+        throw new TypeError("'this' is null or not defind");
+    }
+
+    var o = Object(this);
+
+    var len = o.length;
+
+    if(len === 0){
+        return -1;
+    }
+
+    var n = +fromIndex || 0;
+
+    if(Math.abs(n) === Infinity){
+        n = 0;
+    }
+
+    if(n > len){
+        return -1;
+    }
+
+    k = Math.max(n > 0?n: len - Math.abs(n), 0);
+
+    while(k < len){
+        if(k in o && o[k] === searchElement){
+            return k;
+        }
+        k++;
+    }
+    return -1;
+}
