@@ -204,4 +204,115 @@ Array.prototype.indexof = function(searchElement, fromIndex){
         k++;
     }
     return -1;
+};
+
+// 数组去重
+function unique1(arr){
+    var result = []
+        ,len = arr.length;
+
+    for(var i = 0; i < len; i++) {
+        if(result.indexOf(arr[i]) === -1){
+            result.push(arr[i]);
+        }
+    }
+
+    return result;
 }
+//hash 法
+function unique2(arr){
+    var result = []
+        ,len = arr.length
+        ,val
+        ,type
+        ,json = {};
+
+    for(var i = 0; i < len; i++){
+        val = arr[i];
+        type = typeof arr[i];
+
+        if(!json[val]){
+            json[val] = [type];
+            result.push(val);
+        }else if(json[val].indexOf(type) === -1){
+            json[val].push(type);
+            result.push(val);
+        }
+    }
+
+    return result;
+}
+//set 对象
+function unique3(arr){
+    return [...(new Set(arr))];
+}
+
+//双重循环
+function unique4(arr){
+    var result = [arr[0]]
+        ,len = arr.length;
+
+    for(var i = 1; i < len; i++){
+        var flg = false;
+
+        for(var j = 0; j < result.length; j++){
+            if(arr[i] === result[j]){
+                flg = true;
+                break;
+            }
+        }
+
+        if(!flg){
+            result.push(arr[i]);
+        }
+    }
+
+    return result;
+}
+
+//对象法
+function unique5(arr) {
+    var result = []
+        ,json = {}
+        ,len = arr.length
+        ,val
+        ,type;
+
+    for(var i = 0; i < len; i++){
+        type = typeof arr[i];
+        val = arr[i];
+
+        if(!json[type + val]){
+            json[type + val] = 1;
+            result.push(val);
+        }
+    }
+
+    return result;
+}
+
+//数组排序
+function sort(arr){
+    arr.sort(function(a, b) {
+        return a - b;
+    });
+    return arr;
+}
+
+//冒泡排序
+function sort1(arr) {
+    var len = arr.length;
+
+    for(var i = 0; i < len -1; i++){
+        for(var j = 0; j < len - 1 - i; j++){
+            if(arr[j] > arr[j + 1]){
+                var temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+
+    return arr;
+}
+
