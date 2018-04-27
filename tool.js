@@ -243,9 +243,9 @@ function unique2(arr){
     return result;
 }
 //set 对象
-function unique3(arr){
-    return [...(new Set(arr))];
-}
+// function unique3(arr){
+//     return [...(new Set(arr))];
+// }
 
 //双重循环
 function unique4(arr){
@@ -315,4 +315,123 @@ function sort1(arr) {
 
     return arr;
 }
+
+/*
+*
+* 根据DOM2级事件规定，事件流应该包括三个阶段，事件捕获阶段，处于目标阶段和事件冒泡阶段。
+* */
+//事件监听
+function addEvent(ele, type, handle, boolean) {
+    if(ele.addEventListener){ //dom2
+        ele.addEventListener(type,handle, boolean);
+    }else if(ele.attachEvent) { //ie
+        ele.attachEvent('on' + type, handle);
+    }else { //dom0
+        ele['on' + type] = handle;
+    }
+}
+//事件移除
+function removeEvent(ele, type, handle, boolean) {
+    if(ele.removeEventListener){
+        ele.removeEventListener(type,handle,boolean); //boolen 冒泡阶段触发
+    }else if(ele.detachEvent){
+        ele.detachEvent('on' + type, handle);
+    }else{
+        ele['on' + type] = null;
+    }
+}
+//阻止元素默认事件
+function stopDefault(event){
+    var ev = arguments.callee.caller.arguments[0] || event;
+
+    if(ev && ev.preventDefault){
+        // 阻止默认浏览器动作(W3C)
+        ev.preventDefault();
+    }else if(window.event){
+        // IE中阻止函数器默认动作的方式
+        window.event.returnValue = false;
+    }
+}
+//事件冒泡
+function cancelPropagation(event){
+    var ev = arguments.callee.caller.arguments[0] || event;
+    if(ev && ev.stopPropagation){
+        // ff , opera
+        ev.stopPropagation();
+    }else if(window.event){
+        //ie
+        window.event.cancelBubble = true;
+    }
+}
+
+//浏览器
+function bowserMessage(){
+    var agent = navigator.userAgent.toLowerCase();
+    var sys = {};
+    var s;
+
+    (s = agent.match(/rv:([\d.]+)\) like gecko/)) ? sys.ie = s[1]:
+    (s = agent.match(/msie ([\d.]+)/)) ? sys.ie = s[1]:
+    (s = agent.match(/edge\/([\d.]+)/)) ? sys.edge = s[1]:
+    (s = agent.match(/chrome\/([\d.]+)/)) ? sys.chrome = s[1]:
+    (s = agent.match(/firefox\/([\d.]+)/)) ? sys.firefox = s[1]:
+    (s = agent.match(/opera\/([\d.]+)/)) ? sys.opera = s[1]:
+    (s = agent.match(/safari\/([\d.]+)/)) ? sys.safari = s[1]: 0;
+
+    sys.os = function(){ //底层操作系统
+        if(/windows/.test(agent)){
+            return 'windows';
+        } else if(/linux/.test(agent)){
+            return 'linux';
+        } else if(/iphone|ipod|ipad|ios/.test(agent)){
+            return 'ios';
+        } else if(/mac/.test(agent)){
+            return 'mac';
+        }
+    }();
+
+    return sys;
+}
+//时间是多久之前
+function timeAgo(time, onlyDate){
+    var arr = [[],[]]
+        ,stamp = new Date().getTime() - new Date(time).getTime();
+
+    var digit = function(num, len) {
+        var str = '';
+        len = len || 2;
+        num = String(num);
+        for(var i = num.length; i < len ; i++){
+            str += '0';
+        }
+        return str + num;
+    };
+
+    if(stamp > 1000*60*60*24*8){ //大于八天显示日期格式
+        stamp = new Date(time);
+        arr[0][0] = digit(stamp.getFullYear(),4);
+        arr[0][1] = digit(stamp.getMonth() + 1);
+        arr[0][2] = digit(stamp.getDate());
+
+        if(!onlyDate){ //是否只显示日期
+            arr[1][0] = digit(stamp.getHours());
+            arr[1][1] = digit(stamp.getMinutes());
+            arr[1][2] = digit(stamp.getSeconds());
+        }
+        return arr[0].join('-') + ' ' + arr[1].join(':');
+    }
+
+    if(stamp > 1000*60*60*24)
+        return ((stamp/1000/60/60/24) | 0) + '天前';
+    else if(stamp > 1000*60*60)
+        return ((stamp/1000/60/60) | 0) + '小时前';
+    else if(stamp > 1000*60*2) //小于两分钟为刚刚
+        return ((stamp/1000/60) | 0) + '分钟前';
+    else if(stamp < 0)
+        return '未来';
+    else
+        return '刚刚';
+}
+
+//
 
