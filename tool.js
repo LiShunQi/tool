@@ -433,5 +433,31 @@ function timeAgo(time, onlyDate){
         return '刚刚';
 }
 
-//
+//倒计时
+function countdown(endTime, serverTime, callback){
+    var type = typeof serverTime === 'function'
+        ,end = new Date(endTime).getTime()
+        ,now = new Date((!serverTime || type) ? new Date().getTime() : serverTime).getTime()
+        ,count = end - now
+        ,time = [
+            Math.floor(count/(1000*60*60*24)), //天
+            Math.floor(count/(1000*60*60))  % 24, //时
+            Math.floor(count/(1000*60))  % 60, //分
+            Math.floor(count/(1000)) % 60 //秒
+        ];
+
+    // console.log(time);
+    if(type) callback = serverTime;
+
+    var timer = setTimeout(function() {
+        countdown(endTime, now + 1000, callback);
+    }, 1000);
+
+    callback && callback(count > 0 ? time : [0,0,0,0], serverTime, timer);
+
+    if(count < 0) clearTimeout(timer);
+    return timer;
+}
+
+
 
