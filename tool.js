@@ -458,6 +458,76 @@ function countdown(endTime, serverTime, callback){
     if(count < 0) clearTimeout(timer);
     return timer;
 }
+//字符简化 xxxyydcc to 3x2yd2c
+function sampleStr(str) {
+    var new_str = ''
+        ,count = 1
+        ,str_arr = str.split('')
+        ,same = str_arr[0];
+
+    for(var i = 1; i < str_arr.length; i++){
+        // var temp = '';
+        if(str_arr[i] === same){
+            count++;
+            if(i === str_arr.length - 1){
+                count === 1 ? new_str += same : new_str += (count + same);
+            }
+        }else{
+            count === 1 ? new_str += same : new_str += (count + same);
+            same = str_arr[i];
+            count = 1;
+            if(i === str_arr.length - 1){
+                count === 1 ? new_str += same : new_str += (count + same);
+            }
+        }
+    }
+    return new_str;
+}
+
+//原生ajax封装
+function ajax(option){
+    var xhr;
+    option = option || {};
+    option.type = (option.type || 'get').toUpperCase();
+    option.dataType = (option.dataType || 'json');
+
+    var paramform = function(data){
+        var arr = [];
+        data = data || {};
+        for(var name in data){
+            if(data.hasOwnProperty(name)){
+                arr.push(encodeURIComponent(name) + '=' + encodeURIComponent(data[name]));
+            }
+        }
+        return arr.join('&');
+    };
+    var params = paramform(option.data);
+
+    if(window.XMLHttpRequest){
+        xhr = new XMLHttpRequest();
+    }else{
+        xhr = new ActiveXObject('Microsoft.XMLHTTP');
+    }
+
+    xhr.onreadystatechange = function () {
+        if(xhr.readyState === 4){
+            if(xhr.status >= 200 && xhr.status < 300){
+                option.success && option.success(xhr.responeText,xhr.responeXML);
+            }else {
+                option.error && option.error(xhr.status);
+            }
+        }
+    };
+
+    if(option.type === 'GET'){
+        xhr.open('GET', option.url + '?' + params, true);
+        xhr.send(null);
+    }else if(option.type === 'POST'){
+        xhr.open('POST', option.url, true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send(params);
+    }
+}
 
 
 

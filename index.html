@@ -31,24 +31,62 @@
             background: black;
         }
     </style>
+    <style>
+        .box{
+            position: relative;
+            width: 200px;
+            height: 200px;
+            background-color: blue;
+        }
+        .center{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            /*margin-left: -50px;*/
+            /*margin-top: -50px;*/
+            /*width: 100px;*/
+            /*height: 100px;*/
+            background-color: #f00;
+        }
+    </style>
 </head>
 <body>
 <!--<h1 class="one two three four">tool</h1>-->
 
-<!--<div class="wrap">-->
-    <!--<div class="main"></div>-->
-    <!--<div class="left"></div>-->
-    <!--<div class="right"></div>-->
-<!--</div>-->
-
+<div class="wrap">
+    <div class="main"></div>
+    <div class="left"></div>
+    <div class="right"></div>
+</div>
+<hr/>
+<ul id="test">
+    <li>这是第一条</li>
+    <li>这是第二条</li>
+    <li>这是第三条</li>
+</ul>
+<hr />
 <div id="btn_wrap">
     <button id="btn">button</button>
 </div>
+<hr/>
+<div class="box">
+    <div class="center">center</div>
+</div>
 
 <script src="./jquery.min.js"></script>
-<script src="./tool.js"></script>
+<script src="./tool.js?v=20180501"></script>
 <script>
-    console.log(bowserMessage());
+    var lis = document.getElementById('test').getElementsByTagName('li');
+
+    for(var i = 0; i < lis.length; i++){
+        var obj = lis[i];
+        (function(i) {
+            obj.onclick = function() {
+                alert(i + 1);
+            }
+        })(i);
+    }
 </script>
 </body>
 </html>
