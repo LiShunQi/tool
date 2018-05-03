@@ -315,6 +315,63 @@ function sort1(arr) {
 
     return arr;
 }
+//快速排序
+function quickSort(arr){
+    var len = arr.length
+        ,index
+        ,centerValue
+        ,left = []
+        ,right = [];
+
+    if(len <= 1) return arr;
+
+    index = Math.floor(len/2);
+
+    centerValue = arr.splice(index, 1);
+    len -= 1;
+
+    for(var i = 0; i < len; i++){
+        if(arr[i] > centerValue){
+            right.push(arr[i]);
+        }else{
+            left.push(arr[i]);
+        }
+    }
+
+    return quickSort(left).concat(centerValue, quickSort(right));
+}
+//选择排序
+function selectSort(arr) {
+    var len = arr.length
+        ,temp;
+
+    for(var i = 0; i < len -1; i++){
+        for(var j = i + 1; j < len; j++){
+            if(arr[i] > arr[j]){
+                temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+    }
+
+    return arr;
+}
+//插入排序
+function insertionSort(array) {
+    console.time('插入排序耗时：');
+    for (var i = 1; i < array.length; i++) {
+        var key = array[i];
+        var j = i - 1;
+        while ( array[j] > key) {
+            array[j + 1] = array[j];
+            j--;
+        }
+        array[j + 1] = key;
+    }
+    console.timeEnd('插入排序耗时：');
+    return array;
+}
 
 /*
 *
@@ -528,6 +585,147 @@ function ajax(option){
         xhr.send(params);
     }
 }
+//判断是否是数组
+function isArray(obj){
+    return Object.prototype.toString.call(obj) === '[object Array]';
+}
+//获取数组中的最值
+function minOrmax(arr, type){
+    type = type || 'min';
 
+    if(type === 'min')
+        return Math.min.apply(Math, arr);
+    else if(type === 'max')
+        return Math.max.apply(Math, arr);
+}
+//获取窗口高度
+function pageHeight(){
+    return document.documentElement.clientHeight || document.body.clientHeight;
+}
+//获取窗口宽度
+function pageWidth() {
+    return document.documentElement.clientWidth || document.body.clientWidth;
+}
+//判断页面滚动高度
+function scrollHeight(){
+    return document.documentElement.scrollTop || document.body.scrollTop;
+}
+//返回页面顶部
+function backTop(time){
+    var height,timer;
 
+    timer = setInterval(function() {
+        height = document.documentElement.scrollTop || document.body.scrollTop;
+        if(height <= 0) clearInterval(timer);
+
+        if(document.body.scrollTop){
+            document.body.scrollTop = height - 10;
+        }else{
+            document.documentElement.scrollTop = height - 10;
+        }
+    }, time);
+}
+// 判断变量类型
+function isType(type){
+    type = type[0].toUpperCase() + type.substring(1);
+
+    return function(obj) {
+        return Object.prototype.toString.call(obj) === '[object ' + type + ']';
+    }
+}
+//元素距离文档的距离
+function offset(ele){
+    var pos = {
+        left: 0,
+        top: 0
+    };
+
+    while(ele){
+        pos.left += ele.offsetLeft;
+        pos.top += ele.offsetTop;
+        ele = ele.offsetParent;
+    }
+
+    return pos;
+}
+//设置页面滚动的距离
+function setScrollTop(value){
+    window.scrollTo(0, value);
+    return value;
+}
+//深拷贝
+function deepClone(obj) {
+    var type, copy;
+    type = typeof obj;
+
+    if(type !== 'object') return obj;
+
+    if(obj instanceof Array){
+        copy = [];
+        for(var i = 0; i < obj.length; i++){
+            copy[i] = deepClone(obj[i]);
+        }
+        return copy;
+    }else{
+        copy = {};
+        for(var key in obj){
+            if(obj.hasOwnProperty(key)){
+                copy[key] = deepClone(obj[key]);
+            }
+        }
+        return copy;
+    }
+}
+//随机数
+function randomNum(start, end){
+    return Math.floor(start + Math.random()* (end - start));
+}
+//随机色
+function randomColor(rgb){
+    var color;
+    if(rgb){
+        color = rgb + '(' + Math.floor(Math.random()*256) + ',' +
+            Math.floor(Math.random()*256) + ',' +
+            Math.floor(Math.random()*256) + ')';
+    }else{
+        color = '#' + ('00000' + (Math.random() * 0x1000000).toString(16)).slice(-6);
+    }
+    return color;
+}
+/**
+ *
+ * @desc   判断是否为URL地址
+ * @param  {String} str
+ * @return {Boolean}
+ */
+function isUrl(str) {
+    return /[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/i.test(str);
+}
+/**
+ *
+ * @desc   判断是否为手机号
+ * @param  {String|Number} str
+ * @return {Boolean}
+ */
+function isPhoneNum(str) {
+    return /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/.test(str)
+}
+/**
+ *
+ * @desc  判断是否为身份证号
+ * @param  {String|Number} str
+ * @return {Boolean}
+ */
+function isIdCard(str) {
+    return /^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/.test(str)
+}
+/**
+ *
+ * @desc   判断是否为邮箱地址
+ * @param  {String}  str
+ * @return {Boolean}
+ */
+function isEmail(str) {
+    return /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/.test(str);
+}
 
