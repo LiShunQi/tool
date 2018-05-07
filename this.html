@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    var foo = 'outer';
+    var myObject = {
+        foo: 'bar',
+        func: function () {
+            var self = this;
+            console.log('outer func : this.foo = ' + this.foo);
+            console.log('outer func : self.foo = ' + self.foo);
+            (function(test) {
+                console.log('inner func : this.foo = ' + test.foo);
+                console.log('inner func : self.foo = ' + self.foo);
+            })(self);
+        }
+    };
+    var fun = myObject.func;
+
+    fun();
+</script>
+</body>
+</html>
