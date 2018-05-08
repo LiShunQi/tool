@@ -3,8 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .div-test{
+            width: 200px;
+            height: 200px;
+            background-color: red;
+           transform: scale(0)
+        }
+    </style>
 </head>
 <body>
+
+<div class="div-test"></div>
+<div>00</div>
 <script>
     var foo = 'outer';
     var myObject = {
@@ -21,7 +32,6 @@
     };
     var fun = myObject.func;
 
-    fun();
 </script>
 </body>
 </html>

@@ -729,3 +729,31 @@ function isEmail(str) {
     return /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/.test(str);
 }
 
+//判读对象是否为空
+function isEmptyObject1(obj){
+    if(JSON.stringify(obj) === '{}'){
+        return true;
+    }
+    return false;
+}
+function isEmptyObject2(obj) {
+    for(var key in obj){
+        return false;
+    }
+    return true;
+}
+function isEmptyObject3(obj){
+    var arr = Object.getOwnPropertyNames(obj); //Object.keys (ES5)返回可枚举的属性，及不可枚举的属性
+    if(!arr.length)
+        return true;
+    else
+        return false;
+}
+function isEmptyObject4(obj) {
+    var arr = Object.keys(obj); //Object.keys (ES5)返回可枚举的属性
+    if(!arr.length)
+        return true;
+    else
+        return false;
+}
+
