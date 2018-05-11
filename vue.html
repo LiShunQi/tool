@@ -2,11 +2,237 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bars-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
     <title>vue</title>
+    <style>
+        .box{
+            width: 200px;
+            height: 200px;
+            border: 1px solid;
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle;
+        }
+        .child{
+            display: inline-block;
+            width: 50px;
+            background-color: red;
+        }
+        .li~li{
+            color: #0f0;
+        }
+    </style>
 </head>
 <body>
 <h3>vue</h3>
 
+<div class="box">
+    <div class="child">content</div>
+</div>
+<ul>
+    <li>2</li>
+    <li class="li">1</li>
+    <li>1</li>
+    <li>1</li>
+    <li>1</li>
+</ul>
+<div style="width:200px;height:200px;border: 1px solid;vertical-align: middle;display: table-cell" id="textDiv">
+    打飞机啊飞机交付方法健身房健身房技术附件就分手设计费福建省副教授积分计算机分手就分手龙卷风
+</div>
 <script src="./vue.js"></script>
+<script>
+    function setCookie(name, val, day) {
+        var now = new Date();
+
+        day = day || 7;
+
+        now.setTime(now.getTime() + day*24*60*60*1000);
+        document.cookie = name + '=' + encodeURIComponent(val) + ';expires=' + now.toGMTString();
+    }
+
+    function getCookie(name) {
+        var reg =  new RegExp('(^| )' + name + '=([^;]*)(;|$)');
+
+        var result = document.cookie.match(reg);
+
+        if(result !== null) return decodeURIComponent(result[2]); return null;
+    }
+
+    function delCookie(name){
+        var value = getCookie(name);
+
+        setCookie(name, value, -1);
+    }
+
+    function padding(num, len){
+        num = String(num);
+        len = len || 2;
+        var str = '';
+        for(var i = num.length; i < len; i++){
+            str += '0';
+        }
+        return str + num;
+    }
+    function toDateString(time, format){
+        var date = time ? new Date(time) : new Date();
+        format = format || 'yyyy-MM-dd HH:mm:ss';
+
+        var ymd = [
+            date.getFullYear(),
+            date.getMonth(),
+            date.getDate()
+        ];
+
+        var hms = [
+            date.getHours(),
+            date.getMinutes(),
+            date.getSeconds()
+        ];
+
+        var result =  format.replace('yyyy', padding(ymd[0]))
+            .replace('MM', padding(ymd[1]))
+            .replace('dd', padding(ymd[2]))
+            .replace('HH', padding(hms[0]))
+            .replace('mm', padding(hms[1]))
+            .replace('ss', padding(hms[2]));
+
+        return result;
+    }
+
+    function string2Date(str){
+        if(!str) return '';
+
+        var tempArr = str.split('-');
+
+        if(tempArr.length !== 3) return false;
+
+        var date = null
+            ,tempArr2 = str.split(' ');
+
+        if(tempArr2.length === 2){
+            var ymd = tempArr2[0].split('-')
+                ,hms = tempArr2[1].split(':');
+
+            date = new Date(ymd[0],ymd[1],ymd[2],hms[0],hms[1],hms[2]);
+        }else{
+            date = new Date(tempArr[0],tempArr[1],tempArr[2],00,00,01);
+        }
+
+        return date;
+    }
+
+    function getSearch(){
+        var query = location.search.substring(1);
+
+        var kv = query.split('&'),obj = {};
+
+        for(var i = 0; i < kv.length; i++){
+            var temp = kv[i].split('=');
+            obj[temp[0]] = temp[1];
+        }
+        return obj;
+    }
+
+    function count(str) {
+        if(!str) return '';
+        var obj = {};
+        var value,count = 1;
+        for(var i = 0; i < str.length; i++) {
+            var v = str.charAt(i);
+
+            if(!obj[v]){
+                obj[v] = 1;
+            }else{
+                obj[v] += 1;
+            }
+
+            if(obj[v] > count){
+                count = obj[v];
+            }
+        }
+
+        return {value:v, count: count};
+    }
+
+    //快速排序
+    function quickSort(arr){
+        var len = arr.length;
+
+        var centerIndex,centerValue,right = [],left = [];
+
+        if(len <= 1) return arr;
+
+        centerIndex = Math.floor(len/2);
+        centerValue = arr.splice(centerIndex,1);
+
+        len -= 1;
+
+        for(var i = 0; i < len; i++){
+            if(arr[i] < centerValue){
+                left.push(arr[i]);
+            }else{
+                right.push(arr[i]);
+            }
+        }
+
+        return quickSort(left).concat(centerValue, quickSort(right));
+    }
+
+    //去重
+    function unique(arr) {
+        var result = [arr[0]];
+
+        for(var i = 0; i < arr.length; i++){
+            var repeat = false;
+
+            for(var j = 0; j < result.length; j++) {
+                if(arr[i] === result[j]){
+                    repeat = true;
+                }
+            }
+
+            if(!repeat) {
+                result.push(arr[i]);
+            }
+        }
+
+        return result;
+    }
+</script>
+<script>
+    var defaultParams = function(a = 1, b = 2) {
+        console.log(a + b);
+    }
+
+    class Person {
+        constructor(x,y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        toString() {
+            return this.x + this.y;
+        }
+    }
+
+    var person = new Person(7,8);
+</script>
+
+<script>
+    function s() {
+        alert(this);
+    }
+//    document.querySelector('#textDiv').onclick = function () {
+//        alert(this);
+//        s();
+//    };
+//    document.querySelector('#textDiv').onclick = s();
+
+    document.querySelector('#textDiv').onclick = s;
+</script>
 </body>
 </html>

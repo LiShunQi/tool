@@ -122,6 +122,27 @@ function getSearchObj(){
     }
     return obj;
 }
+//统计字符串中字母出现最多的一个
+function count(str) {
+    if(!str) return '';
+    var obj = {};
+    var value,count = 1;
+    for(var i = 0; i < str.length; i++) {
+        var v = str.charAt(i);
+
+        if(!obj[v]){
+            obj[v] = 1;
+        }else{
+            obj[v] += 1;
+        }
+
+        if(obj[v] > count){
+            count = obj[v];
+        }
+    }
+
+    return {value:v, count: count};
+}
 
 //判断元素是否包含某各类 6
 function hasClass(ele, name){
