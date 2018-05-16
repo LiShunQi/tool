@@ -138,10 +138,11 @@ function count(str) {
 
         if(obj[v] > count){
             count = obj[v];
+            value = v;
         }
     }
 
-    return {value:v, count: count};
+    return {value:value, count: count};
 }
 
 //判断元素是否包含某各类 6
@@ -776,5 +777,17 @@ function isEmptyObject4(obj) {
         return true;
     else
         return false;
+}
+//链式方法
+function add(num) {
+    var count = num;
+    var _b = function(l){
+        count += l;
+        return _b;
+    };
+    _b.valueOf = function () {
+        return count;
+    };
+    return _b;
 }
 

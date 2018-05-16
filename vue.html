@@ -33,7 +33,7 @@
 <div class="box">
     <div class="child">content</div>
 </div>
-<ul>
+<ul class="one two three fourfour">
     <li>2</li>
     <li class="li">1</li>
     <li>1</li>
@@ -202,6 +202,97 @@
 
         return result;
     }
+
+    //判断是否包含class
+    function hasClass(ele, className) {
+        var reg = new RegExp('(^| )' + className + '( |$)');
+        var name = ele.className;
+
+        if(reg.test(name)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    //添加class
+    function addClass(ele, className) {
+        if(hasClass(ele, className)) return;
+
+        ele.className = ele.className + ' ' + className;
+    }
+
+    //删除class
+    function delClass(ele, className) {
+        if(!hasClass(ele, className)) return;
+
+        var reg = new RegExp('(^| )' + className + '( |$)');
+
+        ele.className = ele.className.replace(reg, ' ');
+    }
+
+    //添加事件监听
+    function addEvent(ele, type, func, boolean) {
+        if(window.addEventListener){
+            ele.addEventListener(type, func, boolean);
+        }else if(window.attachEvent) {
+            ele.attachEvent('on' + type, func);
+        }else {
+            ele['on' + type]  = func;
+        }
+    }
+
+    //移除事件监听
+    function removeEvent(ele, type, func, boolean) {
+        if(window.removeEventListener) {
+            ele.removeEventListener(type, func, boolean);
+        }else if(window.detachEvent) {
+            ele.detachEvent('on' + type, func);
+        }else {
+            ele['on' + type]  = null;
+        }
+    }
+
+    //阻止事件冒泡
+    function stopBubble(ev) {
+        ev = window.event || ev;
+
+        if(ev.stopPropagation) {
+            ev.stopPropagation();
+        }else{
+            ev.cancelBubble = true;
+        }
+    }
+
+    //阻止默认事件
+    function stopDefault(ev) {
+        ev = arguments.callee.caller.arguments[0] || ev;
+
+        if(ev && ev.preventDefault) {
+            ev.preventDefault();
+        }else{
+            window.event.returnValue = false;
+        }
+    }
+
+    //深拷贝
+    function copy(obj){
+       var type = typeof obj;
+       if(type !== 'object') {
+           return obj;
+       }else {
+           var name,
+               result = obj instanceof Array ? [] : {},
+               value;
+
+           for(name in obj) {
+               value = obj[name];
+               result[name] = copy(value);
+           }
+
+           return result;
+       }
+    }
 </script>
 <script>
     var defaultParams = function(a = 1, b = 2) {
@@ -233,6 +324,16 @@
 //    document.querySelector('#textDiv').onclick = s();
 
     document.querySelector('#textDiv').onclick = s;
+
+    //作用域
+    function f1() {
+        var i = 0;
+        return function() {
+            console.log(i++);
+        }
+    }
+    var f2 = f1();
+
 </script>
 </body>
 </html>
