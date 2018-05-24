@@ -791,3 +791,65 @@ function add(num) {
     return _b;
 }
 
+function add2() {
+    var args = [].slice.call(arguments);
+
+    var fn = function () {
+        var arg_fn = [].slice.call(arguments);
+        return add2.apply(null, args.concat(arg_fn));
+    };
+
+    fn.valueOf = function () {
+        return args.reduce(function(prev, next) {
+            return prev * next;
+        })
+    };
+
+    return fn;
+}
+
+//去除字符串前后空格
+String.prototype._trim = function () {
+    return this.replace(/^[\s\uFEFF\xA0]+ | [\s\uFEFF\xA0]+/g, '');
+};
+
+//函数防抖
+function debounce(fn,delay) {
+    var timer;
+
+    return function () {
+        var context = this,
+            arg = arguments;
+
+        clearTimeout(timer);
+        timer = setTimeout(function() {
+            fn.call(context, arg);
+        },delay || 100);
+    }
+}
+
+//函数节流
+function throttle(fn, delay) {
+    var timer
+        ,start = 0
+        ,now = 0;
+
+    return function () {
+        var context = this
+            ,arg = arguments;
+
+        now = new Date().getTime();
+        if(!start) start = now;
+
+        if(now - start >= delay) {
+            fn.call(context, arg);
+            start = new Date().getTime();
+        }else {
+            clearTimeout(timer);
+            timer = setTimeout(function() {
+                fn.call(context, arg);
+            },delay || 100);
+        }
+    }
+}
+
