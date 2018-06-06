@@ -122,6 +122,15 @@ function getSearchObj(){
     }
     return obj;
 }
+function getUrlParam(name) {
+    var reg = new RegExp('(^|)'+ name + '=([^&]*)(&|$)')
+        ,result = window.location.search.slice(1).match(reg);
+
+    if(result) {
+        return decodeURIComponent(result[2])
+    }
+    return null
+}
 //统计字符串中字母出现最多的一个
 function count(str) {
     if(!str) return '';

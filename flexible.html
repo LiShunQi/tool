@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
+    <title>mobile</title>
+    <script src="./flexible.js?v=001"></script>
+    <style>
+        .left,.right {
+            width: 100px;
+            height: 100px;
+            background: #ff0000;
+        }
+        .wrap {
+            display: flex;
+        }
+        .content {
+            background: blue;
+            flex: 1 1 auto;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div class="left">left</div>
+    <div class="content">content</div>
+    <div class="right">right</div>
+</div>
+<div class="box" style="width: 200px;height: 200px;display: flex;align-items: center;border: 1px solid blue;">
+    <div class="main" style="width: 100px;height: 100px;border: 1px solid red;">center</div>
+</div>
+<script>
+    function unique(arr) {
+        var result = [];
+        arr.sort(function(a, b) {
+            if(a < b) {
+                return -1
+            }else if(a > b) {
+                return 1
+            }else {
+                return 0
+            }
+        });
+
+        result[0] = arr[0];
+
+        for(var i = 1; i < arr.length; i++) {
+            if(result[result.length - 1] !== arr[i]) {
+                result.push(arr[i]);
+            }
+        }
+
+        return result;
+    }
+</script>
+<script>
+    function getUrlParam(name) {
+        var reg = new RegExp('(^|)'+ name + '=([^&]*)(&|$)')
+            ,result = window.location.search.slice(1).match(reg);
+
+        if(result) {
+            return decodeURIComponent(result[2])
+        }
+        return null
+    }
+</script>
+</body>
+</html>
